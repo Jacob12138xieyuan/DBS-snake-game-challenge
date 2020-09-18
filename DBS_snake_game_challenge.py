@@ -7,7 +7,7 @@ def main():
         arrays.append(y[1])
     
     x = 2401 
-    y = 2401 #head position starts from [2401][2401], center
+    y = 2401 #head position starts from [2401][2401], center. copyright@Jacob12138xieyuan 
     snake = [[x,y]] # right side is head
     step_num = 0
     direction = 'up'
@@ -181,10 +181,11 @@ def main():
                         snake.append(new_node) # update snake position
                         snake.pop(0)
     if n == step_num:
-        print(snake)
+        #print(snake)
         print("YES")
     else:
-        print("DEAD")                        
+        #print("DEAD")
+        print(step_num)
 
 
 if __name__ == '__main__':
