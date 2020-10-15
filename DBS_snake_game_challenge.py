@@ -1,192 +1,234 @@
+class Node:
+    def __init__(self, position):
+        self.position = position
+        self.next = None
+        self.prev = None
+        
+class LinkedList:
+    def __init__(self, head):
+        self.head = head
+        self.tail = self.head
+
+    def print_(self):
+        p = self.head
+        while p:
+            print(p.position, end="")
+            p = p.next
+
+    def append_head(self, node):
+        self.head.prev = node
+        node.next = self.head
+        self.head = node
+
+    def remove_tail(self):
+        self.tail = self.tail.prev
+        self.tail.next = None
+        
+    def contain(self, node):
+        p = self.head
+        while p.next: # stop before tail, don't check tail
+            if node.position == p.position: # eat itself
+                return True
+            p = p.next
+        return False 
+    
+    
 def main():
     m = int(input()) # number of command
-    arrays = []
     for i in range(m):
         y = input()
         y = y.split(' ')
-        arrays.append(y[1])
-    
-    x = 2401 
-    y = 2401 #head position starts from [2401][2401], center. copyright@Jacob12138xieyuan 
-    snake = [[x,y]] # right side is head
-    step_num = 0
-    direction = 'up'
-    for array in arrays:
-        n = len(array)
-        direction = 'up'
-        x = 2401 
-        y = 2401
+        array = y[1]
+        n = int(y[0])
+        direction = 0 # 0 UP, 1 LEFT, 2 RIGHT, 3 DOWN
+        x = 0
+        y = 0
+        head = Node([x,y])
+        snake = LinkedList(head)
+        alive = True
+        step_num = 0
         for i in range(n):
             step = array[i]
             if step == 'F'or step == 'E': 
-                if direction == 'up' :
-                    current_node = snake[-1] # snake head
-                    new_node = [current_node[0] ,current_node[1] + 1] # move up
-                    direction = 'up' # head direction
+                if direction == 0 :
+                    current_node = snake.head # snake head
+                    new_node = Node([current_node.position[0] ,current_node.position[1] + 1]) # move up
+                    direction = 0 # head direction
                     step_num += 1
                     
-                    if new_node in snake: # eat itself
+                    if snake.contain(new_node): # exclude tail
                         print(step_num)
+                        alive = False
                         break
                     else:
-                        snake.append(new_node) # update snake position
+                        snake.append_head(new_node) # update snake position
                         if step != 'E':  # if no eat apple, delete tail
-                            snake.pop(0)
+                            snake.remove_tail()
                     
-                elif direction == 'left':
-                    current_node = snake[-1] # snake head
-                    new_node = [current_node[0] - 1,current_node[1]] # move up
-                    direction = 'left' # head direction
+                elif direction == 1:
+                    current_node = snake.head # snake head
+                    new_node = Node([current_node.position[0] - 1,current_node.position[1]]) # move up
+                    direction = 1 # head direction
                     step_num += 1
                     
-                    if new_node in snake: # eat itself
+                    if snake.contain(new_node): # exclude tail
                         print(step_num)
+                        alive = False
                         break
                     else:
-                        snake.append(new_node) # update snake position
+                        snake.append_head(new_node) # update snake position
                         if step != 'E':  # if no eat apple, delete tail
-                            snake.pop(0)
+                            snake.remove_tail()
                     
-                elif direction == 'right':
-                    current_node = snake[-1] # snake head
-                    new_node = [current_node[0] + 1 ,current_node[1]] # move up
-                    direction = 'right' # head direction
+                elif direction == 2:
+                    current_node = snake.head # snake head
+                    new_node = Node([current_node.position[0] + 1 ,current_node.position[1]]) # move up
+                    direction = 2 # head direction
                     step_num += 1
                     
-                    if new_node in snake: # eat itself
+                    if snake.contain(new_node): # exclude tail
                         print(step_num)
+                        alive = False
                         break
                     else:
-                        snake.append(new_node) # update snake position
+                        snake.append_head(new_node) # update snake position
                         if step != 'E':  # if no eat apple, delete tail
-                            snake.pop(0)
-    
-                elif direction == 'down': 
-                    current_node = snake[-1] # snake head
-                    new_node = [current_node[0] ,current_node[1] - 1] # move up
-                    direction = 'down' # head direction
+                            snake.remove_tail()
+
+                elif direction == 3: 
+                    current_node = snake.head # snake head
+                    new_node = Node([current_node.position[0] ,current_node.position[1] - 1]) # move up
+                    direction = 3 # head direction
                     step_num += 1
                     
-                    if new_node in snake: # eat itself
+                    if snake.contain(new_node): # exclude tail
                         print(step_num)
+                        alive = False
                         break
                     else:
-                        snake.append(new_node) # update snake position
+                        snake.append_head(new_node) # update snake position
                         if step != 'E':  # if no eat apple, delete tail
-                            snake.pop(0)  
+                            snake.remove_tail()
                     
             elif step == 'L': 
-                if direction == 'up':
-                    current_node = snake[-1] # snake head
-                    new_node = [current_node[0] - 1 ,current_node[1]] # move up
-                    direction = 'left' # head direction
+                if direction == 0:
+                    current_node = snake.head # snake head
+                    new_node = Node([current_node.position[0] - 1 ,current_node.position[1]]) # move up
+                    direction = 1 # head direction
                     step_num += 1
                     
-                    if new_node in snake: # eat itself
+                    if snake.contain(new_node): # exclude tail
                         print(step_num)
+                        alive = False
                         break
                     else:
-                        snake.append(new_node) # update snake position
-                        snake.pop(0)
+                        snake.append_head(new_node) # update snake position
+                        snake.remove_tail()
 
-                elif direction == 'left':
-                    current_node = snake[-1] # snake head
-                    new_node = [current_node[0] ,current_node[1] - 1] # move up
-                    direction = 'right' # head direction
+                elif direction == 1:
+                    current_node = snake.head # snake head
+                    new_node = Node([current_node.position[0] ,current_node.position[1] - 1]) # move up
+                    direction = 3 # head direction
                     step_num += 1
                     
-                    if new_node in snake: # eat itself
+                    if snake.contain(new_node): # exclude tail
                         print(step_num)
+                        alive = False
                         break
                     else:
-                        snake.append(new_node) # update snake position
-                        snake.pop(0)
+                        snake.append_head(new_node) # update snake position
+                        snake.remove_tail()
     
-                elif direction == 'right':
-                    current_node = snake[-1] # snake head
-                    new_node = [current_node[0] ,current_node[1] + 1] # move up
-                    direction = 'up' # head direction
+                elif direction == 2:
+                    current_node = snake.head # snake head
+                    new_node = Node([current_node.position[0] ,current_node.position[1] + 1]) # move up
+                    direction = 0 # head direction
                     step_num += 1
                     
-                    if new_node in snake: # eat itself
+                    if snake.contain(new_node): # exclude tail
                         print(step_num)
+                        print(new_node.position)
+                        alive = False
                         break
                     else:
-                        snake.append(new_node) # update snake position
-                        snake.pop(0)
+                        snake.append_head(new_node) # update snake position
+                        snake.remove_tail()
                     
-                elif direction == 'down':
-                    current_node = snake[-1] # snake head
-                    new_node = [current_node[0] + 1,current_node[1]] # move up
-                    direction = 'right' # head direction
+                elif direction == 3:
+                    current_node = snake.head # snake head
+                    new_node = Node([current_node.position[0] + 1,current_node.position[1]]) # move up
+                    direction = 2 # head direction
                     step_num += 1
                     
-                    if new_node in snake: # eat itself
+                    if snake.contain(new_node): # exclude tail
                         print(step_num)
+                        alive = False
                         break
                     else:
-                        snake.append(new_node) # update snake position
-                        snake.pop(0)
+                        snake.append_head(new_node) # update snake position
+                        snake.remove_tail()
                     
             elif step == 'R':
-                if direction == 'up':
-                    current_node = snake[-1] # snake head
-                    new_node = [current_node[0] + 1 ,current_node[1]] # move up
-                    direction = 'right' # head direction
+                if direction == 0:
+                    current_node = snake.head # snake head
+                    new_node = Node([current_node.position[0] + 1 ,current_node.position[1]]) # move up
+                    direction = 2 # head direction
                     step_num += 1
                     
-                    if new_node in snake: # eat itself
+                    if snake.contain(new_node): # exclude tail
                         print(step_num)
+                        alive = False
                         break
                     else:
-                        snake.append(new_node) # update snake position
-                        snake.pop(0)
+                        snake.append_head(new_node) # update snake position
+                        snake.remove_tail()
             
-                elif direction == 'left':
-                    current_node = snake[-1] # snake head
-                    new_node = [current_node[0] ,current_node[1] + 1] # move up
-                    direction = 'up' # head direction
+                elif direction == 1:
+                    current_node = snake.head # snake head
+                    new_node = Node([current_node.position[0] ,current_node.position[1] + 1]) # move up
+                    direction = 0 # head direction
                     step_num += 1
                     
-                    if new_node in snake: # eat itself
+                    if snake.contain(new_node): # exclude tail
                         print(step_num)
+                        alive = False
                         break
                     else:
-                        snake.append(new_node) # update snake position
-                        snake.pop(0)
+                        snake.append_head(new_node) # update snake position
+                        snake.remove_tail()
                     
-                elif direction == 'right':
-                    current_node = snake[-1] # snake head
-                    new_node = [current_node[0] ,current_node[1] - 1] # move up
-                    direction = 'down' # head direction
+                elif direction == 2:
+                    current_node = snake.head # snake head
+                    new_node = Node([current_node.position[0] ,current_node.position[1] - 1]) # move up
+                    direction = 3 # head direction
                     step_num += 1
                     
-                    if new_node in snake: # eat itself
+                    if snake.contain(new_node): # exclude tail
                         print(step_num)
+                        alive = False
                         break
                     else:
-                        snake.append(new_node) # update snake position
-                        snake.pop(0)
+                        snake.append_head(new_node) # update snake position
+                        snake.remove_tail()
                     
-                elif direction == 'down':
-                    current_node = snake[-1] # snake head
-                    new_node = [current_node[0] - 1 ,current_node[1]] # move up
-                    direction = 'left' # head direction
+                elif direction == 3:
+                    current_node = snake.head # snake head
+                    new_node = Node([current_node.position[0] - 1 ,current_node.position[1]]) # move up
+                    direction = 1 # head direction
                     step_num += 1
                     
-                    if new_node in snake: # eat itself
+                    if snake.contain(new_node): # exclude tail
                         print(step_num)
+                        alive = False
                         break
                     else:
-                        snake.append(new_node) # update snake position
-                        snake.pop(0)
-    if n == step_num:
-        #print(snake)
-        print("YES")
-    else:
-        #print("DEAD")
-        print(step_num)
+                        snake.append_head(new_node) # update snake position
+                        snake.remove_tail()
+        if alive and n == step_num:
+            #snake.print_()
+            print("YES")
 
 
 if __name__ == '__main__':
     main()
+
