@@ -19,11 +19,13 @@ For each test you should print YES if the snake survived the current game withou
 
 Input:
 
-2 <br>
+3 <br>
 6 FLERFF <br>
 8 EEEELLLL <br>
+6 EEELLL <br>
 
 Output:
 
 YES <br>
-7
+7 <br>
+YES
